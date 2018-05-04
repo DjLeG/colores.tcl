@@ -74,3 +74,7 @@ proc do_ff_color {cc texto} {
 	if {[string index $cst end] != "\010"} {append cst \010}
 	return $cst
 }
+
+#loadhelp colores.help
+
+putlog "Loaded colores.tcl successfully."
