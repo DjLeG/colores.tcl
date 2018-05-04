@@ -75,6 +75,21 @@ proc do_ff_color {cc texto} {
 	return $cst
 }
 
+# Decrementa una variable en una cantidad dada o por defecto en 1
+proc decr {nombreVar {decremento 1}} {
+	upvar 1 $nombreVar var
+	incr var -$decremento
+}
+# Genera números aleatorios entre dos límites dados.
+proc rand_2 {min max} {
+	return  [expr {int(rand()*($max-$min+1)+$min)}]
+}
+
+# Cambia los caracteres de una frase dada por caracteres ASCii.
+proc rr1_coder {text} {
+    return [string map -nocase {a ã b ß c © d Ð e ê f ƒ g G h H i î j J k K l £ m M n n ñ Ñ o ø p þ q ¶ r ® s § t T u µ v V w VV x × y ¥ z Z} $text]
+}
+
 #loadhelp colores.help
 
 putlog "Cargado colores.tcl correctamente."
