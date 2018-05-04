@@ -2,7 +2,7 @@
 # 	Declaramos el numero de versión de para que un script pueda
 #	detectar que se ha cargado y si la versión es la necesaria
 #
-set utilities_library_version 100
+set colores_lib_version 100
 
 #	\002	Ctrl-b	Negritas-Bold
 #
@@ -77,4 +77,4 @@ proc do_ff_color {cc texto} {
 
 #loadhelp colores.help
 
-putlog "Loaded colores.tcl successfully."
+putlog "Cargado colores.tcl correctamente."
