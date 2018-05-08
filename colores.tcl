@@ -80,6 +80,7 @@ proc decr {nombreVar {decremento 1}} {
 	upvar 1 $nombreVar var
 	incr var -$decremento
 }
+
 # Genera números aleatorios entre dos límites dados.
 proc rand_2 {min max} {
 	return  [expr {int(rand()*($max-$min+1)+$min)}]
