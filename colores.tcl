@@ -68,9 +68,11 @@ proc do_ff_color {cc args} {
 		}
 		append cst $arg
 	}
-	if {[string index $cst 0] != "\003" || [string index $cst 1] == ","} {
-		# cst no tiene su propio color podemos colorearlo
+	if {[string index $cst 0] != "\003"} {
+		# text no tiene su propio color podemos colorearlo
 		set cst "\003$cc$cst"
+	} elseif {[string index $cst 1] == ","} {
+		set cst [strinsert $cst 1 "$cc"]
 	}
 	set index [string first "\010" $cst]
 	while {$index >= 0} {
@@ -81,7 +83,7 @@ proc do_ff_color {cc args} {
 		}
 		set index [string first "\010" $cst]
 	}
-	if {$close && [string index $cst end] != "\010"} {append cst #\010}
+	if {$close && [string index $cst end] != "\010"} {append cst \010}
 	return $cst
 }
 
