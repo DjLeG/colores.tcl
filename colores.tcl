@@ -2,7 +2,7 @@
 # 	Declaramos el numero de versión de para que un script pueda
 #	detectar que se ha cargado y si la versión es la necesaria
 #
-set colores_lib_version 100
+set colores_lib_version 110
 
 #	\002	Ctrl-b	Negritas-Bold
 #
@@ -17,6 +17,9 @@ proc bold texto { return "\002$texto\002" }
 
 #	Proc de formato de subrayado
 proc uline texto { return "\037$texto\037" }
+
+#	Proc de formato de video inverso
+proc invid texto { return "\026$texto\026" }
 
 #
 #	Formato de colores IRC
@@ -41,37 +44,44 @@ proc uline texto { return "\037$texto\037" }
 foreach {name code} { white 00 black 01 blue 02 green 03 lred 04 brown 05 \
 		purple 06 orange 07 yellow 08 lgreen 09 cyan 10 lcyan 11 lblue 12 \
 		pink 13 grey 14 lgrey 15} {
-	set body "do_ff_color $code \$texto"
-	proc $name texto $body
+	set body [format {do_ff_color %s {*}$args} $code]
+	proc $name args $body
 }
 
 #
 #	name: do_ff_color
 #	@param	string	$cc
 #		codigo de color mirc uno o dos caracteres
-#	@param	string	$texto
-#		cadena a formatear con el color dado en $cc
+#	@param	string	$args
+#		parametros de entrada a formatear con el color dado en $cc
+#		si uno de los parametros no es -nc o -noclose, la cadena de retorno
+#		incluira al final un caracter \008 para marcar su final
 #	@return string
 #		cadena de retorno formateada
 #
-proc do_ff_color {cc texto} {
-	set cst ""
-	if {[string index $texto 0] != "\003" || [string index $texto 1] == ","} {
-		# texto no tiene su propio color podemos colorearlo
-		append cst "\003$cc$texto"
-	} else {
-		append cst $texto
+proc do_ff_color {cc args} {
+	set cst ""; set close true
+	foreach arg $args {
+		if {$arg in {-nc -noclose}} {
+			set close false
+			continue
+		}
+		append cst $arg
+	}
+	if {[string index $cst 0] != "\003" || [string index $cst 1] == ","} {
+		# cst no tiene su propio color podemos colorearlo
+		set cst "\003$cc$cst"
 	}
 	set index [string first "\010" $cst]
 	while {$index >= 0} {
-		if {[string index $texto [expr $index +1]] != "\003"} {
+		if {[string index $args [expr $index +1]] != "\003"} {
 			set cst [string replace $cst $index $index "\003$cc"]
 		} else {
 			set cst [string replace $cst $index $index ""]
 		}
 		set index [string first "\010" $cst]
 	}
-	if {[string index $cst end] != "\010"} {append cst \010}
+	if {$close && [string index $cst end] != "\010"} {append cst #\010}
 	return $cst
 }
 
