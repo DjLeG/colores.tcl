@@ -87,6 +87,11 @@ proc do_ff_color {cc args} {
 	return $cst
 }
 
+# Inserta una cadena dentro de otra en una posicion determinada
+proc strinsert {cadena pos insertar} {
+	string replace $cadena $pos $pos $insertar[string index $cadena $pos]
+}
+
 # Crea un comando chr usando alias y format
 interp alias {} chr {} format %c
 
