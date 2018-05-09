@@ -87,6 +87,9 @@ proc do_ff_color {cc args} {
 	return $cst
 }
 
+# Crea un comando chr usando alias y format
+interp alias {} chr {} format %c
+
 # Decrementa una variable en una cantidad dada o por defecto en 1
 proc decr {nombreVar {decremento 1}} {
 	upvar 1 $nombreVar var
